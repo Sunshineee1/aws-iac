@@ -11,8 +11,8 @@ DB_ADDRESS="$1"
 echo "<html>
 <head><title> Technical interview task2</title></head>
 <body>
-    <h1>Успешно Разполагане (Terraform + AWS)!</h1>
-    <p>Уеб сървърът работи!</p>
-    <p>Адрес на Базата Данни: $DB_ADDRESS (Вътрешна връзка)</p>
+    <h1>Success (Terraform + AWS)!</h1>
+    <p>The web server works well !</p>
+    <p>Database address : $DB_ADDRESS </p>
 </body>
 </html>" | sudo tee /usr/share/nginx/html/index.html
