@@ -10,7 +10,6 @@ terraform {
   }
 }
 
-# Използва AWS ключовете, които конфигурира с 'aws configure'
 provider "aws" {
   region = "eu-central-1" 
 }
@@ -38,7 +37,7 @@ resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.app_vpc.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
-  map_public_ip_on_launch = true # EC2 инстанциите получават публично IP
+  map_public_ip_on_launch = true 
   tags = {
     Name = "Public-Subnet-A"
   }
@@ -123,7 +122,7 @@ resource "aws_security_group" "web_sg" {
 # 4. EC2 instances
 # ----------------------------------------------------
 
-# Ubuntu AMI ID за eu-central-1 (Провери за най-новия или го замени)
+# Ubuntu AMI ID за eu-central-1
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
