@@ -110,7 +110,7 @@ resource "aws_security_group" "web_sg" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1" # Всички протоколи
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
@@ -122,17 +122,17 @@ resource "aws_security_group" "web_sg" {
 # 4. EC2 instances
 # ----------------------------------------------------
 
-# Ubuntu AMI ID за eu-central-1
+# Ubuntu
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"]
 }
 
-#creatin two EC2 instances 
+#creating two EC2 instances 
 resource "aws_instance" "web_app" {
   count                  = 2
   ami                    = data.aws_ami.ubuntu.id
@@ -140,7 +140,6 @@ resource "aws_instance" "web_app" {
   subnet_id              = count.index == 0 ? aws_subnet.public_a.id : aws_subnet.public_b.id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
   
-  # user_data е преместен тук, където 'count.index' е дефиниран!
   user_data = <<-EOT
     #!/bin/bash
     sudo apt update -y
@@ -149,7 +148,7 @@ resource "aws_instance" "web_app" {
     sudo systemctl enable nginx
     echo "<h1>Hello from EC2 in AZ: ${data.aws_availability_zones.available.names[count.index]}</h1>" | sudo tee /var/www/html/index.html
     EOT
-    
+
   tags = {
     Name = "Web-Instance-${count.index + 1}"
   }
